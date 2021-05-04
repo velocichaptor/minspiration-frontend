@@ -32,7 +32,7 @@ function App() {
 
   return (
     <div className="App">
-      <MenuBar/>
+      <MenuBar buildFeed={buildFeed}/>
       <Feed
       postData={posts}
       />

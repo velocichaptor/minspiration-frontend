@@ -3,21 +3,52 @@ import { Card, Icon, Image, Button, Label } from 'semantic-ui-react'
 
 function PostCard({id, title, image, caption}) {
 
+    const [likes, setLikes] = useState([])
+    const [postLikes, setPostLikes] = useState({})
+    const postId = id
+    // debugger
    
         useEffect(() => {
             fetch(`http://localhost:3000/likes`)
               .then((r) => r.json())
               .then(likes => {
-                likeGetter(likes)
+                likeSetter(likes)
+                // console.log(likes)
+                // debugger
                 }
               )}, []);
 
-    function likeGetter(likes){
-
+    function likeSetter(likes){
+        setLikes(likes)
+        console.log(likes)
+        // debugger
     }
 
-    function likeHandler(){
+    function postLikeSetter(){
+    // likeTester()
+    let likesOfPost = likes.filter(like => like.post_id === postId)
+    console.log('hello', likesOfPost)
+    setPostLikes(likesOfPost)
+    // debugger
+}
 
+    function likeHandler(){
+        fetch(`http://localhost:3000/likes`, {
+            method: "POST",
+            headers: {
+              "Content-Type": 'application/json',
+              "Accept": 'application/json'
+            },
+            body: JSON.stringify({
+              user_id: 1,
+              post_id: postId,
+            })
+          })
+          .then(res => res.json())
+        //   .then(likes => {
+        //     likeSetter(likes)
+        //   }
+        //   ) 
     }
 
 return (
@@ -38,7 +69,7 @@ return (
         Like
       </Button>
       <Label as='a' basic pointing='left'>
-        total likes
+        {postLikes}
       </Label>
     </Button>
     </Card.Content>
