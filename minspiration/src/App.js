@@ -10,8 +10,6 @@ import NewPostForm from './Body/NewPostForm'
 function App() {
 
   const [posts, setPosts] = useState([])
-  // const [open, setOpen] = useState(true)
-  // const [rerender, setRerender] = useState([])
 
 
   useEffect(() => {
@@ -20,36 +18,31 @@ function App() {
       .then(posts => {
         buildFeed(posts)
       })
-  }, []);
+  }, [posts]);
 
   function buildFeed(posts) {
-    console.log('goodbye', posts)
     setPosts(posts)
   }
   
-  // const openForm = (e) => {
-  //   setOpen(!open)
-  // }
-
   const handleAddPost = (post) => {
     setPosts(posts => [...posts, post])
   }
 
-  const handleDeletePost = (posts) => {
-    debugger
-    setPosts(posts)
-  }
+  // const handleDeletePost = (posts) => {
+  //   debugger
+  //   setPosts(posts)
+  // }
   
 
   return (
     <div className="App">
-      <MenuBar buildFeed={buildFeed}/>
+      <MenuBar />
       <Feed
       postData={posts}
-      handleDeletePost={handleDeletePost}
+      // handleDeletePost={handleDeletePost}
+      buildFeed={buildFeed}
       />
       <NewPostForm handleAddPost={handleAddPost}/>
-   {/* {open ? 'hello' : 'goodbye'} */}
     </div>
   );
 }

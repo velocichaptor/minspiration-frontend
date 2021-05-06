@@ -1,90 +1,66 @@
 import React, {useEffect, useState} from 'react'
 import { Card, Icon, Image, Button, Label } from 'semantic-ui-react'
 
-function PostCard({id, title, image, caption, user_id, handleDeletePost}) {
+function PostCard({id, title, image, caption, user_id, likes, buildFeed}) {
+    let displayLikes = likes
+    const postID = id
+    const [displayUser, setDisplayUser] = useState('')
+    const [postLikes, setPostLikes] = useState(displayLikes)
     
-
-    const [likes, setLikes] = useState([])
-    const [postLikes, setPostLikes] = useState({})
-    const [users, setUser] = useState([])
-    const postId = id
-    const userID = user_id
-    // debugger
-   
+    
+    
     useEffect(() => {
-        fetch(`http://localhost:3000/likes`)
+        fetch(`http://localhost:3000/users/${user_id}`)
             .then((r) => r.json())
-            .then(likes => {
-            likeSetter(likes)
+            .then(user => {
+            userSetter(user)
             }
-            )}, 
-        []);
-
-        function likeSetter(likes){
-            setLikes(likes)
-            // console.log(likes)
-            // debugger
-        }
-
-     useEffect(() => {
-        fetch(`http://localhost:3000/users`)
-            .then((r) => r.json())
-            .then(users => {
-            userSetter(users)
-            }
-            )}, 
-        []);
-
-        function userSetter(users){
-            setUser(users)
-            console.log(users)
-            // debugger
-        }
-    // likeTester()
-    let likesOfPost = likes.filter(like => like.post_id === postId)
-    // console.log('hello', likesOfPost)
-    // debugger
-
-    let userOfPost = users.filter(user => user.id === userID)
-     console.log('hello', userOfPost)
-    // debugger
+            )}, []);
+ 
+    const userSetter = (user) => {
+        setDisplayUser(user.username)
+    }
 
     function likeHandler(){
-        fetch(`http://localhost:3000/likes`, {
-            method: "POST",
+        fetch(`http://localhost:3000/posts/${postID}`, {
+            method: "PATCH",
             headers: {
               "Content-Type": 'application/json',
               "Accept": 'application/json'
             },
             body: JSON.stringify({
-              user_id: 1,
-              post_id: postId,
+              likes: likes + 1,
             })
           })
           .then(res => res.json())
-          .then(likes => {
-            likeSetter(likes)
-            debugger
+          .then(updatedPost => {
+            likeSetter(updatedPost)
+            // debugger
           }
           ) 
     }
 
+    function likeSetter(updatedPost){
+        console.log('hello', updatedPost)
+        setPostLikes(updatedPost.likes)
+    }
+
     function deleteHandler(){
-        fetch(`http://localhost:3000/posts/${postId}`, {
+        fetch(`http://localhost:3000/posts/${postID}`, {
             method: "DELETE",
         })
           .then((response) => response.json())
           .then((posts) => {
-            handleDeletePost(posts);
+            buildFeed(posts);
           });
     }
-
+//  {/*wrapped ui={true} */}
 return (
-  <Card>
-    <Image src={image} wrapped ui={false} />
+  <Card color='blue'>
+    <Image src={image} size='medium' wrapped ui={false} />
     <Card.Content>
       <Card.Header>{title}</Card.Header>
-      <Card.Meta>{userOfPost.name}</Card.Meta>
+      <Card.Meta>by {displayUser}</Card.Meta>
       <Card.Description>
         {caption}
       </Card.Description>
@@ -97,13 +73,13 @@ return (
         Like
       </Button>
       <Label as='a' basic pointing='left'>
-        {likesOfPost.length}
+        {postLikes}
       </Label>
     </Button>
     <Button as='div' labelPosition='right'>
       <Button icon
       onClick={deleteHandler}>
-        <Icon name='heart' />
+        <Icon name='cut' />
         Delete
       </Button>
     </Button>

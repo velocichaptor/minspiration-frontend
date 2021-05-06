@@ -2,11 +2,16 @@ import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import PostCard from './PostCard'
 
-function Feed({postData, handleDeletePost}) {
+function Feed({postData, buildFeed}) {
   
 
 
-  const postArr = postData.map(post => <PostCard key={post.id} {...post} handleDeletePost={handleDeletePost}/>)
+  const postArr = postData.map(post => <PostCard 
+    key={post.id} 
+    {...post} 
+    buildFeed={buildFeed}
+    // handleDeletePost={handleDeletePost}
+    />)
   
 
   return (

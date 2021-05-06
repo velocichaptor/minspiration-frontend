@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Button, Container, Image, Modal, Form } from 'semantic-ui-react'
+import { Button, Container, Form } from 'semantic-ui-react'
 
 function NewPostForm({handleAddPost}) {
   const [title, setTitle] = useState("")
@@ -25,7 +25,8 @@ function NewPostForm({handleAddPost}) {
         title: title,
         image: image,
         caption: caption,
-        user_id: 1
+        user_id: 1,
+        likes: 0
       })
     })
     .then(res => res.json())
