@@ -28,11 +28,11 @@ export default class MenuBar extends Component {
         </Menu.Item>
 
         <Menu.Item
-          name='liked'
-          active={activeItem === 'liked'}
+          name='likes'
+          active={activeItem === 'likes'}
           onClick={this.handleItemClick}
         >
-          Liked
+          likes
         </Menu.Item>
       </Menu>
     )

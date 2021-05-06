@@ -2,11 +2,12 @@ import React from 'react'
 import { Grid } from 'semantic-ui-react'
 import PostCard from './PostCard'
 
-function Feed({postData}) {
-  // debugger
+function Feed({postData, handleDeletePost}) {
+  
 
 
-  const postArr = postData.map(post => <PostCard key={post.id} {...post}/>)
+  const postArr = postData.map(post => <PostCard key={post.id} {...post} handleDeletePost={handleDeletePost}/>)
+  
 
   return (
   <Grid relaxed columns={4}>
@@ -15,9 +16,7 @@ function Feed({postData}) {
   )
  }
 
-//make fetch request that renders data
-//    - destructure the data
-//    - pass it into the card
+
 //make form for capturing and persisting new data
 //    - create form component that renders on click of button
 //    - have the form capture the data
